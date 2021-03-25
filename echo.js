@@ -17,4 +17,4 @@ for (let elem of process.argv.slice(2)) {
 }
 
 
-console.log(str)
+console.log(str)utf-8

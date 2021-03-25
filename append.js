@@ -17,6 +17,7 @@ for (let elem of process.argv.slice(2)) {
 }
 
 // Programme
+/*
 let appendContent = ''
 
 for (let elem of process.argv.slice(2, -1)) {
@@ -24,3 +25,9 @@ for (let elem of process.argv.slice(2, -1)) {
 }
 
 fs.writeFileSync(process.argv[process.argv.length - 1], appendContent)
+*/
+
+for (let elem of process.argv.slice(2, -1)) {
+  let data = fs.readFileSync(elem, 'utf-8')
+  fs.appendFileSync(process.argv[process.argv.length - 1], data)
+}

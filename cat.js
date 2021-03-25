@@ -24,4 +24,4 @@ for (let elem of process.argv.slice(2)) {
   fileContent += fs.readFileSync(elem, 'utf-8') + ' '
 }
 
-console.log(fileContent)
+console.log(fileContent)utf-8

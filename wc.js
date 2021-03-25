@@ -1,57 +1,59 @@
-/*
-node wc.js file.txt
-279    1211   13376 file.txt
-Affiche le nombre de lignes, mots et caractères du fichier file.txt.
-Gestion de l'erreur si pas le bon nombre d'arguments.
-Gestion l'erreur si file.txt n'existe pas.
-
-wc.js
-Améliorer l'exercice précédent en ajoutant la possibilité de passer des paramètres optionnels: -l: pour afficher le nombre de lignes uniquement.
--w: pour afficher le nombre de mots uniquement.
--c: pour afficher le nombre de caractères uniquement.
-Pour simplifier l'exercice nous supposerons que seulement 1 seul paramètres optionnel peut être passé en même temps.
-
-node wc.js file.txt
-279    1211   13376 file.txt
-node wc.js -l file.txt
-279 file.txt
-node wc.js -w file.txt
-1211 file.txt
-node wc.js -c file.txt
-13376 file.txt
-Gestion de l'erreur si pas le bon nombre d'arguments.
-Gestion de l'erreur si le paramètre optionnel passé n'existe pas.
-Gestion l'erreur si file.txt n'existe pas.
-*/
-
 //Importation des packages
 const fs = require('fs')
 
-// Fonctions
-
-
-const nbLine = (file) => {
+// Fonction
+const counter = (file) => {
+  // Nombre de caractères
+  let fileContent = fs.readFileSync(file, 'utf-8')
+  let charCount = fileContent.length
+  // Nombre de lignes
   let fileLineTab = (fs.readFileSync(file, 'utf-8')).split('\n')
-  return fileLineTab.length
-}
-
-const nbWord = (file) => {
-  let fileLineTab = (fs.readFileSync(file, 'utf-8')).split('\n')
+  let lineCount = fileLineTab.length
+  // Nombre de mots
   let fileWordTab = fileLineTab.map((elem) => elem.split(' '))
-  let count = 0
-  for (let elem of fileLineTab) {
-    count += fileWordTab.length
+  let wordCount = 0
+  for (let elem of fileWordTab) {
+    wordCount += elem.length
   }
-  return count
+  return [lineCount, wordCount, charCount]
 }
 
-const nbChar = (wordTab) => {
-  let fileCharTab = wordTab.map
 
+// Verification de l'input
+if (process.argv.length < 3) {
+  console.log('usage: node wc.js file.txt\nor use one or several option:\n-c\n-w\n-l')
+  process.exit(1)
 }
 
-let tab1 = nbLine('longText.txt')
-let tab2 = nbWord('longText.txt')
+if (!fs.existsSync(process.argv[2])) {
+  console.log(`The file "${process.argv[2]}" doesn't exist`)
+  process.exit(1)
+}
 
-console.log(tab1.length)
-console.log(tab2.length)
+// Options ?
+let c = false
+let w = false
+let l = false
+
+if (process.argv.length !== 3) {
+  for (let elem of process.argv.slice(3)) {
+    if (elem === '-c') {
+      c = true
+    } else if (elem === '-w') {
+      w = true
+    } else if (elem === '-l') {
+      l = true
+    } else {
+      console.log(`The option "${elem}" is not defined.`)
+      process.exit(1)
+    }
+  }
+} else {
+  c = true
+  w = true
+  l = true
+}
+
+// Programme
+result = counter(process.argv[2])
+console.log(`${l ? result[0] + ' ' : ''}${w ? result[1] + ' ' : ''}${c ? result[2] + ' ' : ''}${process.argv[2]}`)
