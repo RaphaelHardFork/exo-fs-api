@@ -11,7 +11,12 @@ if (process.argv.length < 3) {
 // Verification des fichiers
 for (let elem of process.argv.slice(2)) {
   if (!(fs.existsSync(elem))) {
-    console.log(`The file ${elem} doesn't exist`)
+    console.log(`The file "${elem}" doesn't exist`)
+    process.exit(1)
+  }
+  const stats = fs.statSync(elem)
+  if (!stats.isFile()) {
+    console.log(`error : "${elem}" is not a file.`)
     process.exit(1)
   }
 }
@@ -21,7 +26,7 @@ for (let elem of process.argv.slice(2)) {
 let fileContent = ''
 
 for (let elem of process.argv.slice(2)) {
-  fileContent += fs.readFileSync(elem, 'utf-8') + ' '
+  fileContent += fs.readFileSync(elem, 'utf-8') + '\n'
 }
 
-console.log(fileContent)utf-8
+console.log(fileContent)
